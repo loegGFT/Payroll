@@ -63,8 +63,11 @@ public class EmployeeController {
 
     @DeleteMapping("/employees/{id}")
     ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
-        repository.deleteById(id);
-
+        try {
+            repository.deleteById(id);
+        } catch (RuntimeException ex) {
+            throw new EmployeeNotFoundException(id);
+        }
         return ResponseEntity.noContent().build();
     }
 }
